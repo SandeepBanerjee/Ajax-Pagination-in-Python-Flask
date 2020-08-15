@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ajax Pagination</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="{{url_for('static', filename='css/')}}black.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Ajax Pagination</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>Petname</th>
+                    <th>Gender</th>
+                    <th>IP Address</th>
+                </tr>
+            </thead>
+            <tbody id="result" ></tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var page = 1;
+            loadData(page);
+        });
+        var count = 0;
+        function loadData(page){
+            $("#result").html('<tr>\
+                <td colspan="6">\
+                    <div class="col-md-12" style="text-align:center;">Loading....</div>\
+                </td>\
+            </tr>');
+            var numofrecords = '40';
+            $.ajax({
+                url: "{{url_for('ajax_product_listing')}}",
+                type: "POST",
+                data : {Submit:'Pagination', numofrecords:numofrecords, page:page},
+                success:function(a){
+                    $("#result").html(a.message);
+                }
+            });
+        }
+        /*Pagination*/
+        function Pagination(page){
+            loadData(page);
+        }
+        function Search(){
+            var page = 1;
+            loadData(page);
+        }
+    </script>
+</body>
+
+</html>
